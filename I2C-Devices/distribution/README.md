@@ -1,3 +1,6 @@
+# I2C devices
+To use the device implementations you need to put the Pi4J libraries enlisted below in the 'examples' section anywhere in a folder and include them in the classpath of your application.
+
 # I2C devices examples
 
 Please copy the jar files stored in the 'devices' folder to the 'lib' folder of 
