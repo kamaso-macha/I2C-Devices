@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	If TestAppender is required.
+	  
+<Configuration xmlns:xi="http://www.w3.org/2001/XInclude"
+    packages="utillity"
+    status="warn"
+>
+-->
+
+
+<Configuration xmlns:xi="http://www.w3.org/2001/XInclude"
+    status="warn"
+>
+
+    <Appenders>
+    
+        <Console name="LogToConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36}: %L - %msg%n"/>
+        </Console>
+        
+	    <File name="DebugFile" fileName="./log/FermBox.log" append="false">
+	      <PatternLayout>
+	        <Pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36}: %L - %msg%n</Pattern>
+	      </PatternLayout>
+	    </File>
+
+		<!-- stAppender name="TestAppender">
+			<BurstFilter level="INFO" rate="16" maxBurst="100"/>
+		</TestAppender -->
+		
+    </Appenders>
+
+    <Loggers>
+       
+        <!-- Logger name="i2cDevice.register" level="all" additivity="false">
+           <AppenderRef ref="LogToConsole"/>
+            <AppenderRef ref="DebugFile"/>
+        </Logger -->
+        
+                
+        <Root level="all">
+            <AppenderRef ref="LogToConsole"/>
+            <!-- AppenderRef ref="DebugFile"/ -->
+            <!-- AppenderRef ref="TestAppender"/ -->
+        </Root>
+        
+    </Loggers>
+    
+</Configuration>

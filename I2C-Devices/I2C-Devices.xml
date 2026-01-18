@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="" name="Create Jar files, one for each device">
+    
+	<property name="project.name"		value="I2C-Devices" />
+    
+	<property name="build.line"			value="1" />
+	<property name="build.version"		value="1" />
+    
+	<property name="dir.projectRoot"		value="${basedir}" />
+	<property name="dir.buildInfo.base"		value="${basedir}/build" />
+
+	<property name="dir.jar.basedir"		value="${dir.projectRoot}/target/classes" />
+	<property name="dir.distribution"		value="${basedir}/distribution/devices" />
+	<property name="dir.distribution.lib"	value="${dir.distribution}/lib" />
+    
+	<tstamp>
+		<format property="current.time" pattern="yyyy.MM.dd HH:mm:ss" />
+	</tstamp>
+   
+	
+	<target name="ADS_1115" depends="i2c-device" >
+		
+		<local name="build.number" />
+		<buildnumber file="${dir.buildInfo.base}/ADS_1115/build.number"/>
+		<mkJar targetName="ADS_1115" buildNumber="${build.number}" binaries="adc/ads1115/**" />
+    
+	</target>
+	
+	
+	<target name="DS_1621" depends="i2c-device" >
+		
+		<local name="build.number" />
+		<buildnumber file="${dir.buildInfo.base}/DS_1621/build.number"/>
+		<mkJar targetName="DS_1621" buildNumber="${build.number}" binaries="tempSensor/ds1621/**,tempSensor/utility/**" />
+    
+	</target>
+	
+	
+	<target name="LM_75" depends="i2c-device" >
+		
+		<local name="build.number" />
+		<buildnumber file="${dir.buildInfo.base}/LM_75/build.number"/>
+		<mkJar targetName="LM_75" buildNumber="${build.number}" binaries="tempSensor/lm75/**,tempSensor/utility/**" />
+   
+	</target>
+	
+	
+	<target name="i2c-device" unless="i2cdevice.done" description="Dependent on all devices">
+		
+		<local name="build.number" />
+		<buildnumber file="${dir.buildInfo.base}/I2C-Device/build.number"/>
+		<mkJar targetName="I2C-Device" buildNumber="${build.number}" binaries="i2cDevice/**" />
+		
+		<property name="i2cdevice.done" value="true" />
+		
+	</target>
+	
+	
+	<!-- ****************************************************************************************** -->
+	
+	<macrodef name="mkJar" >
+
+		<attribute name="targetName" />
+		<attribute name="buildNumber" />
+		<attribute name="binaries" />
+		
+		<sequential>
+
+			<echo message="Jar: run = @{targetName}" />
+
+			<echo message="Jar: mkManifest ..." />
+			<mkManifest targetName="@{targetName}" builNumber="@{buildNumber}" />
+	    
+			<local name="jarFileName" />
+			<property name="jarFileName" value="${dir.distribution}/@{targetName}-${build.line}.${build.version}.@{buildNumber}.jar" />
+
+			<echo message="Jar: Candidate = ${jarFileName}, Line = ${build.line} Version = ${build.version}, Number = @{buildNumber}, basedir = ${dir.jar.basedir}" />
+
+			<echo message="Jar: delete ${jarFileName}" />
+			<delete file="${jarFileName}" failonerror="false"/>
+
+			<echo message="Jar: createte ${jarFileName}" />
+			<jar destfile="${jarFileName}"
+				basedir="${dir.jar.basedir}"
+				includes="@{binaries}/**"
+				manifest="${dir.buildInfo.base}/@{targetName}/MANIFEST.MF"
+			/>
+
+			<echo message="Jar: done ${jarFileName}" />
+
+		</sequential>
+			
+	</macrodef>
+	
+	
+	<macrodef name="mkManifest" >
+		
+		<attribute name="targetName" />
+		<attribute name="builNumber" />
+		
+		<sequential>
+
+			<echo message="Manifest: run = @{targetName}" />
+			<echo message="Manifest: Candidate = @{targetName}, Line = ${build.line} Version = ${build.version}, Number = @{builNumber}, Build time = ${current.time}" />
+			
+			<local name="mfFileName" />
+			<property name="mfFileName" value="${dir.buildInfo.base}/@{targetName}/MANIFEST.MF" />
+			
+			<echo message="Manifest: delete ${mfFileName}" />
+			<delete file="${mfFileName}" failonerror="false"/>
+	
+			<echo message="Manifest: create ${mfFileName}" />
+			<manifest file="${mfFileName}">
+		        <attribute name="Manifest-Version" 	value="1.0"/>
+		        <attribute name="Built-By" 			value="${user.name}"/>
+		        <attribute name="Project" 			value="${project.name}"/>
+		        <attribute name="Modul" 			value="@{targetName}"/>
+		        <attribute name="Build-Line" 		value="${build.line}"/>
+		        <attribute name="Build-Version" 	value="${build.version}"/>
+		        <attribute name="Build-Number" 		value="@{builNumber}"/>
+		        <attribute name="Build-Date" 		value="${current.time}"/>
+		    </manifest>
+		
+			<echo message="Manifest: done ${mfFileName}" />
+			
+		</sequential>
+		
+	</macrodef>
+	
+
+</project>
