@@ -56,15 +56,19 @@ public class DS_1621_Test {		// NOSONAR
 
 	private DS_1621 ds1621;
 	private int persistentRun = 0;
-	
+
 	
 	private void run() {
+
+		float temp;
 		
 		do { // NOSONAR
 			
 			try {
 				
-				logger.info("DS 1621: {}", ds1621.readTemperature());
+				temp = ds1621.readTemperature();
+				
+				logger.info("DS 1621: {}", (Math.floor(temp * 10) / 10));
 				
 				Thread.sleep(10_000);
 				
