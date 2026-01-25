@@ -15,14 +15,16 @@ owd=`pwd`
 
 cd $INSTALL_PATH
 
-CLASS_PATH=.:./I2CDeviceTest.jar
+
+CLASS_PATH=.:./bin/DS_1621-Test-1.1.2.jar
+
+CLASS_PATH=$CLASS_PATH:./lib/DS_1621-1.1.2.jar
+
 
 #rem
 #rem   L I B R A R Y    s e c t i o n
 #rem
-CLASS_PATH=$CLASS_PATH:./bin/Test-DS_1621-1.1.1.jar
 
-CLASS_PATH=$CLASS_PATH:./lib/DS_1621-1.1.1.jar
 CLASS_PATH=$CLASS_PATH:./lib/I2C-Device-1.1.1.jar
 
 CLASS_PATH=$CLASS_PATH:./lib/args4j-2.37.jar

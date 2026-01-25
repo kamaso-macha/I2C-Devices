@@ -15,14 +15,15 @@ owd=`pwd`
 
 cd $INSTALL_PATH
 
-CLASS_PATH=.:./I2CDeviceTest.jar
+
+CLASS_PATH=.:./bin/LM_75-Test-1.1.1.jar
+
+CLASS_PATH=$CLASS_PATH:./lib/LM_75-1.1.1.jar
 
 #rem
 #rem   L I B R A R Y    s e c t i o n
 #rem
-CLASS_PATH=$CLASS_PATH:./bin/Test-LM_75-1.1.1.jar
 
-CLASS_PATH=$CLASS_PATH:./lib/LM_75-1.1.1.jar
 CLASS_PATH=$CLASS_PATH:./lib/I2C-Device-1.1.1.jar
 
 CLASS_PATH=$CLASS_PATH:./lib/args4j-2.37.jar
