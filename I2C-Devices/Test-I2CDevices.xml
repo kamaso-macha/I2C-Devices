@@ -58,6 +58,24 @@
 	</target>
 	
 	
+	<target name="PCF_8574" depends="_common" >
+		
+		<local name="build.number" />
+		<buildnumber file="${dir.buildInfo.base}/PCF_8574-Test/build.number"/>
+		<mkJar targetName="PCF_8574-Test" buildNumber="${build.number}" binaries="_common/**,pcf8574/**,pcf8574/impl/**" />
+   
+	</target>
+	
+	
+	<target name="PCF_8574A" depends="_common" >
+		
+		<local name="build.number" />
+		<buildnumber file="${dir.buildInfo.base}/PCF_8574A-Test/build.number"/>
+		<mkJar targetName="PCF_8574A-Test" buildNumber="${build.number}" binaries="_common/**,pcf8574a/**,pcf8574/impl/**" />
+   
+	</target>
+	
+	
 	<target name="_common" unless="common.done" description="Dependent on all devices">
 				
 		<property name="common.done" value="true" />

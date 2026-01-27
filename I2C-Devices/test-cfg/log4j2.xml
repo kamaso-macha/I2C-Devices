@@ -40,6 +40,18 @@
         </Logger -->
         
                 
+        <Logger name="com.pi4j.plugin.mock.provider.i2c.MockI2C" level="all" additivity="false">
+           <AppenderRef ref="LogToConsole"/>
+            <AppenderRef ref="DebugFile"/>
+        </Logger>
+        
+                
+        <Logger name="com.pi4j" level="off" additivity="false">
+           <AppenderRef ref="LogToConsole"/>
+            <AppenderRef ref="DebugFile"/>
+        </Logger>
+        
+                
         <Root level="all">
             <AppenderRef ref="LogToConsole"/>
             <!-- AppenderRef ref="DebugFile"/ -->

@@ -40,6 +40,12 @@
         </Logger -->
         
                 
+        <Logger name="com.pi4j" level="WARN" additivity="false">
+           <AppenderRef ref="LogToConsole"/>
+            <AppenderRef ref="DebugFile"/>
+        </Logger>
+        
+                
         <Root level="all">
             <AppenderRef ref="LogToConsole"/>
             <!-- AppenderRef ref="DebugFile"/ -->

@@ -47,27 +47,35 @@ public class Basic_Cli {					// NOSONAR
 	@Option(name="-run", usage="0 | 1 -> 0 = 1 shot, 1 = persistent")
 	public static int run = 0;						// NOSONAR
 	
-	@Option(name="-adr", usage="I2C device address [dec | hex]")
+	@Option(name="-adr", required=true, usage="I2C device address [dec | hex]")
 	private static String addrString = UNDEF;
 	
-	@Option(name="-bus", usage="I2C bus number")
+	@Option(name="-bus", required=true, usage="I2C bus number")
 	public static int bus = NOT_SET;		// NOSONAR
 	
 	
 	public static int getAddress() {
-		System.out.println("getAddress()");		// NOSONAR
 		
-		if(bus == NOT_SET
-		|| addrString == UNDEF) {
-			System.err.println("please provide the required parameter -bus and -adr!");		// NOSONAR
-			System.exit(1);
-		}
-
-		int radix = addrString.matches("^0[xX].*") ? 16 : 10;
-		System.out.println("addrString = " + addrString + " -> " + addrString.matches("^0[xX].*") + ", radix = " + radix);		// NOSONAR
+//		if(bus == NOT_SET
+//		|| addrString == UNDEF) {
+//			System.err.println("please provide the required parameter -bus and -adr!");		// NOSONAR
+//			System.exit(1);
+//		}
+//
+		return hex2dec(addrString);
 		
-		return Integer.parseUnsignedInt(addrString.replaceAll("0[xX]", ""), radix);
-
 	} // getAddress()
+	
+	
+	public static int hex2dec(final String aValue) {
+		
+		System.out.println("hex2dec()");		// NOSONAR
+		
+		int radix = aValue.matches("^0[xX].*") ? 16 : 10;
+		System.out.println("aValue = " + aValue + " -> " + aValue.matches("^0[xX].*") + ", radix = " + radix);		// NOSONAR
+		
+		return Integer.parseUnsignedInt(aValue.replaceAll("0[xX]", ""), radix);
+
+	} // hex2dec()
 	
 } // end class CliParameter

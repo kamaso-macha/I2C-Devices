@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="" name="Create Jar files, one for each device">
     
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+	  <classpath>
+	    <pathelement location="C:/Users/Stefan/.p2/pool/plugins/ant-contrib-1.0b3-bin/ant-contrib/ant-contrib-1.0b3.jar"/>
+	  </classpath>
+	</taskdef>
+
 	<property name="project.name"		value="I2C-Devices" />
     
 	<property name="build.line"			value="1" />
@@ -44,8 +50,35 @@
    
 	</target>
 	
+
+	<target name="PCF_8574" depends="i2c-device" >
+		
+		<local name="build.number" />
+		<buildnumber file="${dir.buildInfo.base}/PCF_8574/build.number"/>
+		<mkJar targetName="PCF_8574" buildNumber="${build.number}" binaries="gpio/pcf8574/**,common/**" />
+   
+	</target>
 	
-	<target name="i2c-device" unless="i2cdevice.done" description="Dependent on all devices">
+
+	<target name="PCF_8574A" depends="i2c-device" >
+		
+		<local name="build.number" />
+		<buildnumber file="${dir.buildInfo.base}/PCF_8574A/build.number"/>
+		<mkJar targetName="PCF_8574A" buildNumber="${build.number}" binaries="gpio/pcf8574a/**,gpio/pcf8574/impl/**,common/**" />
+   
+	</target>
+	
+
+	<!--
+	
+		https://stackoverflow.com/questions/5498710/ant-how-to-select-the-latest-modified-file-from-a-directory
+		
+		https://stackoverflow.com/questions/503865/how-to-execute-an-ant-task-only-when-source-files-have-been-modified
+		https://ant.apache.org/manual/Tasks/uptodate.html
+	-->
+	
+	<!-- target name="i2c-device" unless="i2cdevice.done" description="Dependent on all devices" -->
+	<target name="i2c-device" depends="checkforchanges" unless="i2c-device-unchanged" description="Dependent on all devices">
 		
 		<local name="build.number" />
 		<buildnumber file="${dir.buildInfo.base}/I2C-Device/build.number"/>
@@ -55,6 +88,30 @@
 		
 	</target>
 	
+	
+	<target name="checkforchanges">
+		
+		<timestampselector property="latest.modified">
+		  <path>
+		    <fileset dir="${dir.distribution}">
+		      <include name="I2C-Device-*.jar" />
+		    </fileset>
+		  </path>
+		</timestampselector>
+
+		<echo message="latest.modified: ${latest.modified}" />
+		
+		<uptodate property="i2c-device-unchanged"
+			targetfile="${latest.modified}" >
+			
+			<srcfiles dir="." includes="${dir.jar.basedir}/i2cDevice/**"/>
+			
+			<!-- mapper to="${latest.modified}"/ -->
+			
+		</uptodate>
+		
+	</target>
+
 	
 	<!-- ****************************************************************************************** -->
 	
