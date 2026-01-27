@@ -187,6 +187,8 @@ public class PCF_8574_Test {		 // NOSONAR
 	protected void toggle() {
 		logger.info("toggle()");
 		
+		value = (byte) PCF_8574_Cli.hex2dec(PCF_8574_Cli.toggle_byte);		 // NOSONAR
+
 		do { // NOSONAR
 			
 			try {

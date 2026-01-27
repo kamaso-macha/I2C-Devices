@@ -119,29 +119,6 @@ class PCF_8574_ImplTest {
 	void tearDown() throws Exception {
 	}
 
-//	/**
-//	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Impl#PCF_8574(int, int)}.
-//	 */
-//	@Test
-//	void testPCF_8574() {
-//		logger.info("testPCF_8574()");
-//		
-//		// error handling
-//		
-//		IllegalArgumentException thrown;
-//		
-//		thrown = assertThrows(IllegalArgumentException.class, () -> new PCF_8574_Impl(I2C_BUS, 0x1F));
-//		assertEquals("aI2cAddress is out of range 0x20 .. 0x27.", thrown.getMessage());
-//		
-//		assertDoesNotThrow(() -> new PCF_8574_Impl(I2C_BUS, 0x20));
-//		assertDoesNotThrow(() -> new PCF_8574_Impl(I2C_BUS, 0x27));
-//		
-//		thrown = assertThrows(IllegalArgumentException.class, () -> new PCF_8574_Impl(I2C_BUS, 0x28));
-//		assertEquals("aI2cAddress is out of range 0x20 .. 0x27.", thrown.getMessage());
-//		
-//	} // testPCF_8574()
-	
-
 	/**
 	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Impl#readBit(gpio.pcf8574.impl.BIT_NUMBER)}.
 	 */

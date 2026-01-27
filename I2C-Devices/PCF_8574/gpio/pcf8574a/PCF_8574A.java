@@ -71,7 +71,7 @@ public class PCF_8574A extends PCF_8574_Impl { // NOSONAR
 		super(aI2cBusNbr, aI2cAddress);
 	
 		if(aI2cAddress < ADR_LOW || aI2cAddress > ADR_HIG)
-			throw new IllegalArgumentException("aI2cAddress is out of range 0x20 .. 0x27.");
+			throw new IllegalArgumentException("aI2cAddress is out of range 0x38 .. 0x3F.");
 		
 		logger.trace(String.format("PCF_8574(): aI2cBus = %d, aI2cAddress = 0x%02X", aI2cBusNbr, aI2cAddress));
 

@@ -41,6 +41,8 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gpio.pcf8574a.PCF_8574A;
+
 /**
  * Responsibilities:<br>
  * 
@@ -99,8 +101,8 @@ class PCF_8574ATest {
 	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Impl#PCF_8574(int, int)}.
 	 */
 	@Test
-	void testPCF_8574() {
-		logger.info("testPCF_8574()");
+	void testPCF_8574A() {
+		logger.info("testPCF_8574A()");
 		
 		final int I2C_BUS	= 2;
 
@@ -108,13 +110,13 @@ class PCF_8574ATest {
 		
 		IllegalArgumentException thrown;
 		
-		thrown = assertThrows(IllegalArgumentException.class, () -> new PCF_8574(I2C_BUS, 0x37));
+		thrown = assertThrows(IllegalArgumentException.class, () -> new PCF_8574A(I2C_BUS, 0x37));
 		assertEquals("aI2cAddress is out of range 0x38 .. 0x3F.", thrown.getMessage());
 		
-		assertDoesNotThrow(() -> new PCF_8574(I2C_BUS, 0x38));
-		assertDoesNotThrow(() -> new PCF_8574(I2C_BUS, 0x3F));
+		assertDoesNotThrow(() -> new PCF_8574A(I2C_BUS, 0x38));
+		assertDoesNotThrow(() -> new PCF_8574A(I2C_BUS, 0x3F));
 		
-		thrown = assertThrows(IllegalArgumentException.class, () -> new PCF_8574(I2C_BUS, 0x40));
+		thrown = assertThrows(IllegalArgumentException.class, () -> new PCF_8574A(I2C_BUS, 0x40));
 		assertEquals("aI2cAddress is out of range 0x38 .. 0x3F.", thrown.getMessage());
 		
 	} // testPCF_8574()
