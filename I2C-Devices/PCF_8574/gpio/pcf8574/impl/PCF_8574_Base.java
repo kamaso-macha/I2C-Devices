@@ -33,6 +33,7 @@ package gpio.pcf8574.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import common.BIT_NUMBER_8;
 import common.BIT_STATE;
 import i2cDevice.I2CDeviceBase;
 import i2cDevice.I2CErrorException;
@@ -57,9 +58,9 @@ import i2cDevice.I2CErrorException;
 // DOC
 // Created at 2026-01-25 16:52:53
 
-public abstract class PCF_8574_Impl extends I2CDeviceBase { // NOSONAR
+public abstract class PCF_8574_Base extends I2CDeviceBase { // NOSONAR
 
-	private final Logger logger = LoggerFactory.getLogger(PCF_8574_Impl.class.getName());
+	private final Logger logger = LoggerFactory.getLogger(PCF_8574_Base.class.getName());
 
 	protected byte[] rawBuffer;
 	
@@ -68,17 +69,20 @@ public abstract class PCF_8574_Impl extends I2CDeviceBase { // NOSONAR
 	 * @param aI2cBusNbr
 	 * @param aI2cAddress
 	 */
-	public PCF_8574_Impl(int aI2cBusNbr, int aI2cAddress) {
+	public PCF_8574_Base(final int aI2cBusNbr, final int aI2cAddress, final int aAdrLow, final int aAdrHigh) {
 		super(aI2cBusNbr, aI2cAddress);
 
-		logger.trace("PCF_8574_Impl()");
+		logger.trace("PCF_8574_Base()");
+
+		if(aI2cAddress < aAdrLow || aI2cAddress > aAdrHigh)
+			throw new IllegalArgumentException(String.format("aI2cAddress is out of range 0x%02X .. 0x%02X.", aAdrLow, aAdrHigh));
 
 		rawBuffer = new byte[1];
 		
 	} // PCF_8574()
 	
 	
-	public BIT_STATE readBit(final BIT_NUMBER aBitNumber) throws I2CErrorException {
+	public BIT_STATE readBit(final BIT_NUMBER_8 aBitNumber) throws I2CErrorException {
 		logger.trace("readBit(): aBitNumber = {}", aBitNumber);
 		
 		byte currentState = readByte();
@@ -115,7 +119,7 @@ public abstract class PCF_8574_Impl extends I2CDeviceBase { // NOSONAR
 	} // readByte()
 	
 	
-	public void writeBit(final BIT_NUMBER aBitNumber, final BIT_STATE aBitState) throws I2CErrorException {
+	public void writeBit(final BIT_NUMBER_8 aBitNumber, final BIT_STATE aBitState) throws I2CErrorException {
 		logger.trace("writeBit(): aBitNumber = {}, aBitState = {}", aBitNumber, aBitState);
 	
 		int currentState = readByte();		
@@ -162,7 +166,7 @@ public abstract class PCF_8574_Impl extends I2CDeviceBase { // NOSONAR
 	 * @param mask
 	 * @return
 	 */
-	protected int computeMask(final BIT_NUMBER aBitNumber) {
+	protected int computeMask(final BIT_NUMBER_8 aBitNumber) {
 
 		int mask = 1;
 

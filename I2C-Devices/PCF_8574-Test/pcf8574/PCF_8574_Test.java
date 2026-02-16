@@ -35,9 +35,9 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import common.BIT_NUMBER_8;
 import common.BIT_STATE;
 import gpio.pcf8574.PCF_8574;
-import gpio.pcf8574.impl.BIT_NUMBER;
 import i2cDevice.I2CErrorException;
 import pcf8574.impl.PCF_8574_Cli;
 
@@ -117,7 +117,7 @@ public class PCF_8574_Test {		 // NOSONAR
 		logger.info("readBit()");
 
 		logger.info("PCF_8574 readBit: {}", String.format("%s", 
-				pcf8574.readBit(BIT_NUMBER.values()[PCF_8574_Cli.rd_bit])));
+				pcf8574.readBit(BIT_NUMBER_8.values()[PCF_8574_Cli.rd_bit])));
 
 	} // readBit()
 
@@ -131,7 +131,7 @@ public class PCF_8574_Test {		 // NOSONAR
 		
 		logger.info("PCF_8574 setBit: {}", String.format("0x%02X", pcf8574.readByte()));		// NOSONAR
 		
-		pcf8574.writeBit(BIT_NUMBER.values()[PCF_8574_Cli.set_bit], BIT_STATE.HIGH);
+		pcf8574.writeBit(BIT_NUMBER_8.values()[PCF_8574_Cli.set_bit], BIT_STATE.HIGH);
 		
 		logger.info("PCF_8574 setBit: {}", String.format("0x%02X", pcf8574.readByte()));
 
@@ -147,7 +147,7 @@ public class PCF_8574_Test {		 // NOSONAR
 		
 		logger.info("PCF_8574 clearBit: {}", String.format("0x%02X", pcf8574.readByte()));
 		
-		pcf8574.writeBit(BIT_NUMBER.values()[PCF_8574_Cli.clear_bit], BIT_STATE.LOW);
+		pcf8574.writeBit(BIT_NUMBER_8.values()[PCF_8574_Cli.clear_bit], BIT_STATE.LOW);
 		
 		logger.info("PCF_8574 clearBit: {}", String.format("0x%02X", pcf8574.readByte()));
 

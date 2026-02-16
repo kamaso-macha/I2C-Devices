@@ -98,7 +98,7 @@ class PCF_8574ATest {
 	}
 
 	/**
-	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Impl#PCF_8574(int, int)}.
+	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Base#PCF_8574(int, int)}.
 	 */
 	@Test
 	void testPCF_8574A() {

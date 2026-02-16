@@ -31,7 +31,9 @@
 package gpio.pcf8574;
 
 import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -41,9 +43,10 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import common.BIT_NUMBER_8;
 import common.BIT_STATE;
-import gpio.pcf8574.impl.BIT_NUMBER;
-import gpio.pcf8574.impl.PCF_8574_Impl;
+import gpio.pcf8574.impl.PCF_8574_Base;
+import gpio.pcf8574a.PCF_8574A;
 import i2cDevice.I2CErrorException;
 
 /**
@@ -66,29 +69,32 @@ import i2cDevice.I2CErrorException;
 // DOC
 // Created at 2026-01-26 09:43:56
 
-class PCF_8574_ImplTest {
+class PCF_8574_BaseTest {
 
-	private final Logger logger = LoggerFactory.getLogger(PCF_8574_ImplTest.class.getName());
+	private final Logger logger = LoggerFactory.getLogger(PCF_8574_BaseTest.class.getName());
 
 	
 	private static final int I2C_BUS	= 2;
 	private static final int I2C_ADDR	= 0x42;
 	
+	private final int ADR_LOW	= 0x40;
+	private final int ADR_HIGH	= 0x47; 
 	
-	private class TestPCF_8574_Impl extends PCF_8574_Impl {
+	
+	private class TestPCF_8574_Base extends PCF_8574_Base {
 
-		public TestPCF_8574_Impl(int aI2cBusNbr, int aI2cAddress) {
-			super(aI2cBusNbr, aI2cAddress);
+		public TestPCF_8574_Base(int aI2cBusNbr, int aI2cAddress) {
+			super(aI2cBusNbr, aI2cAddress, ADR_LOW, ADR_HIGH);
 		}
 		
 		
-		public int computeMask(final BIT_NUMBER aBitNumber) {
+		public int computeMask(final BIT_NUMBER_8 aBitNumber) {
 			return super.computeMask(aBitNumber);
 		}
 		
 	} // ssalc
 		
-	private TestPCF_8574_Impl cut;
+	private TestPCF_8574_Base cut;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -120,7 +126,34 @@ class PCF_8574_ImplTest {
 	}
 
 	/**
-	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Impl#readBit(gpio.pcf8574.impl.BIT_NUMBER)}.
+	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Base#PCF_8574(int, int)}.
+	 */
+	@Test
+	void testPCF_8574_Base() {
+		logger.info("testPCF_8574_Base()");
+		
+		final int I2C_BUS	= 2;
+		
+		final String expectedExceptionMessage = String.format("aI2cAddress is out of range 0x%02X .. 0x%02X.", ADR_LOW, ADR_HIGH);
+
+		// error handling
+		
+		IllegalArgumentException thrown;
+		
+		thrown = assertThrows(IllegalArgumentException.class, () -> new TestPCF_8574_Base(I2C_BUS, ADR_LOW - 1));
+		assertEquals(expectedExceptionMessage, thrown.getMessage());
+		
+		assertDoesNotThrow(() -> new TestPCF_8574_Base(I2C_BUS, ADR_LOW));
+		assertDoesNotThrow(() -> new TestPCF_8574_Base(I2C_BUS, ADR_HIGH));
+		
+		thrown = assertThrows(IllegalArgumentException.class, () -> new TestPCF_8574_Base(I2C_BUS, ADR_HIGH + 1));
+		assertEquals(expectedExceptionMessage, thrown.getMessage());
+		
+	} // testPCF_8574_Base()
+		
+
+	/**
+	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Base#readBit(common.BIT_NUMBER_8)}.
 	 */
 	@Test
 	void testReadBit() {
@@ -138,7 +171,7 @@ class PCF_8574_ImplTest {
 	
 
 	/**
-	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Impl#readByte()}.
+	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Base#readByte()}.
 	 */
 	@Test
 	void testReadByte() {
@@ -156,7 +189,7 @@ class PCF_8574_ImplTest {
 	
 
 	/**
-	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Impl#writeBit(gpio.pcf8574.impl.BIT_NUMBER, common.BIT_STATE)}.
+	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Base#writeBit(common.BIT_NUMBER_8, common.BIT_STATE)}.
 	 */
 	@Test
 	void testWriteBit() {
@@ -164,14 +197,14 @@ class PCF_8574_ImplTest {
 		
 		try {
 				
-			cut = new TestPCF_8574_Impl(I2C_BUS, I2C_ADDR);
+			cut = new TestPCF_8574_Base(I2C_BUS, I2C_ADDR);
 			
 			BIT_STATE result;
 					
 			// Using the MockI2C implementation of Pi4J project.
 			
 			
-			for(BIT_NUMBER bitNumber : BIT_NUMBER.values()) {
+			for(BIT_NUMBER_8 bitNumber : BIT_NUMBER_8.values()) {
 				logger.info("bitNumber: {} ------------------------------------", bitNumber);
 				
 			
@@ -208,7 +241,7 @@ class PCF_8574_ImplTest {
 	
 
 	/**
-	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Impl#writeByte(byte)}.
+	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Base#writeByte(byte)}.
 	 */
 	@Test
 	void testWriteByte() {
@@ -218,7 +251,7 @@ class PCF_8574_ImplTest {
 		
 		try {
 				
-			cut = new TestPCF_8574_Impl(I2C_BUS, I2C_ADDR);
+			cut = new TestPCF_8574_Base(I2C_BUS, I2C_ADDR);
 					
 			// Using the MockI2C implementation of Pi4J project.
 			
@@ -238,22 +271,22 @@ class PCF_8574_ImplTest {
 	
 
 	/**
-	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Impl#computeMask(gpio.pcf8574.impl.BIT_NUMBER)}.
+	 * Test method for {@link gpio.pcf8574.impl.PCF_8574_Base#computeMask(common.BIT_NUMBER_8)}.
 	 */
 	@Test
 	void testComputeMask() {
 		logger.info("testComputeMask()");
 				
-		cut = new TestPCF_8574_Impl(I2C_BUS, I2C_ADDR);
+		cut = new TestPCF_8574_Base(I2C_BUS, I2C_ADDR);
 				
-		assertEquals(0b0000_0001, cut.computeMask(BIT_NUMBER.B0));
-		assertEquals(0b0000_0010, cut.computeMask(BIT_NUMBER.B1));
-		assertEquals(0b0000_0100, cut.computeMask(BIT_NUMBER.B2));
-		assertEquals(0b0000_1000, cut.computeMask(BIT_NUMBER.B3));
-		assertEquals(0b0001_0000, cut.computeMask(BIT_NUMBER.B4));
-		assertEquals(0b0010_0000, cut.computeMask(BIT_NUMBER.B5));
-		assertEquals(0b0100_0000, cut.computeMask(BIT_NUMBER.B6));
-		assertEquals(0b1000_0000, cut.computeMask(BIT_NUMBER.B7));
+		assertEquals(0b0000_0001, cut.computeMask(BIT_NUMBER_8.B0));
+		assertEquals(0b0000_0010, cut.computeMask(BIT_NUMBER_8.B1));
+		assertEquals(0b0000_0100, cut.computeMask(BIT_NUMBER_8.B2));
+		assertEquals(0b0000_1000, cut.computeMask(BIT_NUMBER_8.B3));
+		assertEquals(0b0001_0000, cut.computeMask(BIT_NUMBER_8.B4));
+		assertEquals(0b0010_0000, cut.computeMask(BIT_NUMBER_8.B5));
+		assertEquals(0b0100_0000, cut.computeMask(BIT_NUMBER_8.B6));
+		assertEquals(0b1000_0000, cut.computeMask(BIT_NUMBER_8.B7));
 		
 	} // testComputeMask()
 	

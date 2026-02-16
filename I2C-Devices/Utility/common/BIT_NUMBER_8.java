@@ -28,7 +28,7 @@
  */
 
 
-package gpio.pcf8574.impl;
+package common;
 
 /**
  * Responsibilities:<br>
@@ -50,7 +50,7 @@ package gpio.pcf8574.impl;
 // DOC
 // Created at 2026-01-25 16:59:56
 
-public enum BIT_NUMBER {
+public enum BIT_NUMBER_8 {
 
 	B0,
 	B1,

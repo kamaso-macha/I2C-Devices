@@ -33,7 +33,7 @@ package gpio.pcf8574a;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gpio.pcf8574.impl.PCF_8574_Impl;
+import gpio.pcf8574.impl.PCF_8574_Base;
 
 /**
  * Responsibilities:<br>
@@ -55,7 +55,7 @@ import gpio.pcf8574.impl.PCF_8574_Impl;
 // DOC
 // Created at 2026-01-27 09:56:48
 
-public class PCF_8574A extends PCF_8574_Impl { // NOSONAR
+public class PCF_8574A extends PCF_8574_Base { // NOSONAR
 
 	private final Logger logger = LoggerFactory.getLogger(PCF_8574A.class.getName());
 
@@ -68,11 +68,8 @@ public class PCF_8574A extends PCF_8574_Impl { // NOSONAR
 	 * @param aI2cAddress
 	 */
 	public PCF_8574A(int aI2cBusNbr, int aI2cAddress) {
-		super(aI2cBusNbr, aI2cAddress);
+		super(aI2cBusNbr, aI2cAddress, ADR_LOW, ADR_HIG);
 	
-		if(aI2cAddress < ADR_LOW || aI2cAddress > ADR_HIG)
-			throw new IllegalArgumentException("aI2cAddress is out of range 0x38 .. 0x3F.");
-		
 		logger.trace(String.format("PCF_8574(): aI2cBus = %d, aI2cAddress = 0x%02X", aI2cBusNbr, aI2cAddress));
 
 	}
