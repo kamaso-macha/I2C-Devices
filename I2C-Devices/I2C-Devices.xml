@@ -33,6 +33,15 @@
 	</target>
 	
 	
+	<target name="BH_1750" depends="i2c-device" >
+		
+		<local name="build.number" />
+		<buildnumber file="${dir.buildInfo.base}/BH_1750/build.number"/>
+		<mkJar targetName="BH_1750" buildNumber="${build.number}" binaries="lightSensor/bh1750/**" />
+    
+	</target>
+	
+	
 	<target name="DS_1621" depends="i2c-device" >
 		
 		<local name="build.number" />

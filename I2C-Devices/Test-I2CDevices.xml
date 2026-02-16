@@ -40,6 +40,15 @@
 	</target>
 	
 	
+	<target name="BH_1750" depends="_common" >
+		
+		<local name="build.number" />
+		<buildnumber file="${dir.buildInfo.base}/BH_1750-Test/build.number"/>
+		<mkJar targetName="BH_1750-Test" buildNumber="${build.number}" binaries="_common/**,bh1750/**" />
+    
+	</target>
+	
+	
 	<target name="DS_1621" depends="_common" >
 		
 		<local name="build.number" />
