@@ -35,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -46,7 +47,6 @@ import org.slf4j.LoggerFactory;
 import common.BIT_NUMBER_8;
 import common.BIT_STATE;
 import gpio.pcf8574.impl.PCF_8574_Base;
-import gpio.pcf8574a.PCF_8574A;
 import i2cDevice.I2CErrorException;
 
 /**
